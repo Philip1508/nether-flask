@@ -1,6 +1,25 @@
 {
+  "item.nether-flask.raw-nether-flask": "Unkindled Nether Flask",
   "item.nether-flask.nether-flask": "Nether Flask",
-  "item.nether-flask.nether-flask.effect.empty": "Empty Nether Flask"
+  "item.nether-flask.nether-flask-shard": "Nether Flask Shard",
+  "item.nether-flask.sublime-bone-dust": "Sublime Bone Dust",
+  "item.nether-flask.purging-stone": "Purging Stone",
+
+
+  "item.nether-flask.tooltipuses": "Yields %s out of %s uses.",
+  "item.nether-flask.tooltip-imbuehint": "Use with Potion in Off-Hand to Imbue!",
+  "item.nether-flask.tooltip-imbuehint-warning": "Choose carefully!",
+
+  "item.nether-flask.upgrade.purging-stone": "Use in Off-Hand whilst wielding Netherflask to remove effect!",
+  "item.nether-flask.upgrade.flask-shard": "Use in Off-Hand whilst wielding Netherflask to increase uses!",
+  "item.nether-flask.upgrade.bone-dust": "Use in Off-Hand whilst wielding Netherflask to increase power!",
+
+
+  "item.nether-flask.nether-flask.effect.empty": "Empty Nether Flask",
+
+  "block.nether-flask.flask-furnace-containername": "Flask Furnace",
+
+  "creative.group.nether-flask": "Nether Flask"
 
 
 }

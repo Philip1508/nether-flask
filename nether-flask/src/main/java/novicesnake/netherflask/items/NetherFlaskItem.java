@@ -2,23 +2,46 @@ package novicesnake.netherflask.items;
 
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PotionItem;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NetherFlaskItem extends PotionItem implements DurabilityNumberItemstack {
+    private static final String NETHER_FLASK_COMPBOUND = "NETHER_FLASK_COMPBOUND";
+
+
+
+    private static final String IMBUED_WITH_POTION = "IMBUED_WITH_POTION";
+    private static final String NETHER_FLASK_LEVEL = "NETHER_FLASK_LEVEL";
+
+    private static final String NETHER_FLASK_CACHED_MODIFIER = "CACHED_MODIFIER";
+    private static final String INITIALIZED = "INITIALIZED";
+
+
+
+
+
+
     public NetherFlaskItem(Settings settings) {
         super(settings);
     }
@@ -26,9 +49,115 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     @Override
     public ItemStack getDefaultStack()
     {
-        return ItemStack.EMPTY;
+        ItemStack netherFlaskDefault = new ItemStack(this);
+        initializeFlask(netherFlaskDefault);
+        return netherFlaskDefault;
     }
 
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+
+        if (world.getTime() % 30 == 0)
+        {
+            if (!stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getBoolean(INITIALIZED))
+            {
+                initializeFlask(stack);
+            }
+        }
+
+        if (world.getTime() % 600 == 0)
+        {
+            updateEffects(stack);
+        }
+
+
+    }
+
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        ItemStack offHandStack = user.getOffHandStack();
+
+        NbtCompound flaskMainCompbound = user.getStackInHand(hand).getOrCreateSubNbt(NETHER_FLASK_COMPBOUND);
+        boolean isImbued = flaskMainCompbound.getBoolean(IMBUED_WITH_POTION);
+
+
+        if (hand == Hand.MAIN_HAND && offHandStack.isOf(Items.POTION) && !isImbued)
+        {
+            List<StatusEffectInstance> scaledEffects = new ArrayList<>();
+            for (StatusEffectInstance effect : PotionUtil.getPotion(offHandStack).getEffects()) {
+                StatusEffect type = effect.getEffectType();
+
+                int dur = effect.getDuration();
+                int amp = effect.getAmplifier();
+                StatusEffectInstance changedEffect = new StatusEffectInstance(type, dur, amp);
+                scaledEffects.add(changedEffect);
+            }
+
+            PotionUtil.setCustomPotionEffects(user.getStackInHand(hand), scaledEffects);
+
+
+            flaskMainCompbound.putBoolean(IMBUED_WITH_POTION, true);
+
+            offHandStack.decrement(1);
+            user.giveItemStack(Items.GLASS_BOTTLE.getDefaultStack());
+            world.playSound(null,user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.AMBIENT, 1f,0.3f);
+
+        }
+
+        if (hand == Hand.MAIN_HAND && offHandStack.isOf(ItemRegistrator.NETHER_FLASK_SHARD)
+                || offHandStack.isOf(ItemRegistrator.BONE_DUST)
+                || offHandStack.isOf(ItemRegistrator.PURGING_STONE))
+        {
+
+            if (offHandStack.isOf(ItemRegistrator.BONE_DUST))
+            {
+                if (upgradeFlaskPower(user.getStackInHand(hand)))
+                {
+                    offHandStack.decrement(1);
+                    updateEffects(user.getStackInHand(hand));
+                    world.playSound(null,user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.AMBIENT, 1f,0.5f);
+
+                }
+
+            }
+
+            if (offHandStack.isOf(ItemRegistrator.NETHER_FLASK_SHARD))
+            {
+                if (upgradeFlaskMaximum(user.getStackInHand(hand)))
+                {
+                    offHandStack.decrement(1);
+                    world.playSound(null,user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_ANVIL_USE, SoundCategory.AMBIENT, 1f,0.8f);
+
+                }
+
+            }
+
+            if (offHandStack.isOf(ItemRegistrator.PURGING_STONE) && isImbued )
+            {
+                PotionUtil.setPotion(user.getStackInHand(hand), Potions.WATER);
+                NbtCompound absoluteNbt = user.getStackInHand(hand).getNbt();
+                if (absoluteNbt != null)
+                {
+                    absoluteNbt.remove("CustomPotionEffects");
+
+                }
+
+                world.playSound(null,user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.AMBIENT, 1f,0.5f);
+
+                user.getStackInHand(hand).getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).putBoolean(IMBUED_WITH_POTION, false);
+                user.getOffHandStack().decrement(1);
+
+            }
+
+
+        }
+
+
+
+        return ItemUsage.consumeHeldItem(world, user, hand);
+    }
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user)
@@ -49,7 +178,13 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
                         statusEffectInstance.getEffectType().applyInstantEffect(player, player, user, statusEffectInstance.getAmplifier(), 1.0);
                     }
                     else {
-                        user.addStatusEffect(new StatusEffectInstance(statusEffectInstance));
+                        StatusEffect type = statusEffectInstance.getEffectType();
+
+                        int duration = Math.round(statusEffectInstance.getDuration() *
+                                stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getFloat(NETHER_FLASK_CACHED_MODIFIER));
+                        int amp = statusEffectInstance.getAmplifier();
+
+                        user.addStatusEffect(new StatusEffectInstance(type, duration, amp));
                     }
 
                 } );
@@ -75,20 +210,24 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
 
     }
 
-
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+        PotionUtil.buildTooltip(stack, tooltip, stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getFloat(NETHER_FLASK_CACHED_MODIFIER));
+        tooltip.add(Text.translatable("item.nether-flask.tooltipuses", getUses(stack), getSoftMax(stack)));
 
-        tooltip.add(Text.of(String.valueOf(getUses(stack))));
+        if (!stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getBoolean(IMBUED_WITH_POTION))
+        {
+            tooltip.add(Text.translatable("item.nether-flask.tooltip-imbuehint"));
+            tooltip.add(Text.translatable("item.nether-flask.tooltip-imbuehint-warning"));
         }
 
-        @Override
+    }
 
-        public Text getName(ItemStack stack) {
+    @Override
+    public Text getName(ItemStack stack) {
 
-            return Text.translatable("item.nether-flask.nether-flask");
-
+        String string =  " +"+stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getInt(NETHER_FLASK_LEVEL);
+            return Text.of(Text.translatable("item.nether-flask.nether-flask").getString() + string);
         }
 
 
@@ -101,6 +240,58 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
         }
 
         return UseAction.DRINK;
+    }
+
+
+
+
+    private void initializeFlask(ItemStack item)
+    {
+        setUses(item, 1);
+        setNbtSoftmax(item, 1);
+        setAbsoluteMaximum(item, 12);
+
+        updateEffects(item);
+
+        PotionUtil.setPotion(item, Potions.WATER);
+        item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).putBoolean(INITIALIZED, true);
+        item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).putInt(NETHER_FLASK_LEVEL, 0);
+    }
+
+
+    private void updateEffects(ItemStack item)
+    {
+        int flaskLevel = item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getInt(NETHER_FLASK_LEVEL);
+        item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).putFloat(NETHER_FLASK_CACHED_MODIFIER, 0.5f+(0.25f*flaskLevel));
+    }
+
+
+    private boolean upgradeFlaskPower(ItemStack item)
+    {
+        NbtCompound mainCompbound = item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND);
+
+        int level = mainCompbound.getInt(NETHER_FLASK_LEVEL);
+        if (level + 1  < 6)
+        {
+            mainCompbound.putInt(NETHER_FLASK_LEVEL, level + 1);
+            return true;
+        }
+        return false;
+
+    }
+
+
+    private boolean upgradeFlaskMaximum(ItemStack item)
+    {
+
+        int softMax = getSoftMax(item);
+        if (softMax + 1  <= getAbsoluteMaximum(item))
+        {
+            setNbtSoftmax(item, softMax+1);
+            return true;
+        }
+        return false;
+
     }
 
 

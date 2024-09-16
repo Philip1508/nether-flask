@@ -10,7 +10,8 @@ public class NetherFlaskClient implements ClientModInitializer {
 	public void onInitializeClient() {
 
 
-		ItemRegistrator.initializeAndRegister();
+
+
 
 
 

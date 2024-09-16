@@ -3,13 +3,12 @@
 	"id": "nether-flask",
 	"version": "${version}",
 	"name": "Nether Flask",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "The Nether Flask is a rechargeable Potion, upgraded through adventuring.",
 	"authors": [
-		"Me!"
+		"Philip 'Bobi'"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://discord.gg/s4gSJvVuq3"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/nether-flask/icon.png",

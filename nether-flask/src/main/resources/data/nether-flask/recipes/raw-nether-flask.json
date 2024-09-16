@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:clay"
+    },
+    "S":
+    {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "pattern": [
+    " S ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "item": "nether-flask:raw-nether-flask"
+  },
+  "show_notification": true
+}

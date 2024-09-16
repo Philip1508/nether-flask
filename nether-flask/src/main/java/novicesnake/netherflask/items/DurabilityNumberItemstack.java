@@ -31,17 +31,18 @@ public interface DurabilityNumberItemstack {
 
     }
 
-    public default void incrementUses(ItemStack stack)
+    public default boolean incrementUses(ItemStack stack)
     {
         NbtCompound nbtMain = stack.getOrCreateSubNbt(NBT_MAINKEY);
         int uses = nbtMain.getInt(NBT_USES);
 
         if (uses+1 > nbtMain.getInt(NBT_SOFTMAX))
         {
-            return;
+            return false;
         }
 
         nbtMain.putInt(NBT_USES, uses+1);
+        return true;
 
     }
 
@@ -54,6 +55,16 @@ public interface DurabilityNumberItemstack {
         int uses = nbtMain.getInt(NBT_USES);
         return uses;
     }
+
+    public default int getSoftMax(ItemStack stack)
+    {
+        NbtCompound nbtMain = stack.getOrCreateSubNbt(NBT_MAINKEY);
+
+        int uses = nbtMain.getInt(NBT_SOFTMAX);
+        return uses;
+    }
+
+
 
 
 
@@ -70,6 +81,20 @@ public interface DurabilityNumberItemstack {
         NbtCompound nbtMain = stack.getOrCreateSubNbt(NBT_MAINKEY);
 
         nbtMain.putInt(NBT_SOFTMAX, uses);
+    }
+
+
+    public default void setAbsoluteMaximum(ItemStack stack, int maximum)
+    {
+        NbtCompound nbtMain = stack.getOrCreateSubNbt(NBT_MAINKEY);
+        nbtMain.putInt(NBT_HARDMAX, maximum);
+
+    }
+
+    public default int getAbsoluteMaximum(ItemStack stack)
+    {
+        NbtCompound nbtMain = stack.getOrCreateSubNbt(NBT_MAINKEY);
+        return nbtMain.getInt(NBT_HARDMAX);
 
     }
 

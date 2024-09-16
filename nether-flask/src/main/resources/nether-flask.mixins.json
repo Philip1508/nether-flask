@@ -3,7 +3,6 @@
 	"package": "novicesnake.netherflask.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin",
 		"CampfireFlaskrestorationMixin"
 	],
 	"injectors": {
