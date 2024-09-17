@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+
+  "ingredients": [
+
+
+      {
+        "item": "minecraft:bucket"
+      },
+      {
+        "item": "minecraft:stick"
+      },
+
+    {
+      "item": "minecraft:nether_star"
+    }
+
+  ],
+  "result": {
+    "count": 2,
+    "item": "nether-flask:nether-stardust"
+  }
+}

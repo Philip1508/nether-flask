@@ -30,7 +30,8 @@
     "recipes": [
       "nether-flask:raw-nether-flask",
       "nether-flask:nether-flask",
-      "nether-flask:purging-stone"
+      "nether-flask:purging-stone",
+      "nether-flask:nether-stardust"
     ]
   },
   "sends_telemetry_event": false

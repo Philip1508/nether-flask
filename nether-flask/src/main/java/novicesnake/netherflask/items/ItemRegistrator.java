@@ -19,6 +19,7 @@ public class ItemRegistrator {
 
 
 
+    public static Item NETHER_STARDUST;
     public static Item RAW_NETHER_FLASK;
     public static Item NETHER_FLASK;
     public static Item NETHER_FLASK_SHARD;
@@ -31,6 +32,9 @@ public class ItemRegistrator {
 
         RAW_NETHER_FLASK = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "raw-nether-flask"),
                 new Item(new FabricItemSettings().maxCount(1)));
+
+        NETHER_STARDUST = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "nether-stardust"),
+                new Item(new FabricItemSettings()));
 
         NETHER_FLASK = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "nether-flask"),
                 new NetherFlaskItem(new FabricItemSettings().maxCount(1)  )
@@ -63,6 +67,8 @@ public class ItemRegistrator {
                     entries.add(NETHER_FLASK_SHARD);
                     entries.add(BONE_DUST);
                     entries.add(PURGING_STONE);
+
+                    entries.add(NETHER_STARDUST);
 
                 })
                 .build();
