@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import novicesnake.netherflask.NetherFlask;
+import novicesnake.netherflask.blocks.BlocksRegistrator;
 
 public class ItemRegistrator {
 
@@ -20,6 +21,7 @@ public class ItemRegistrator {
 
 
     public static Item NETHER_STARDUST;
+    public static Item STARDUST_CAMPFIRE;
     public static Item RAW_NETHER_FLASK;
     public static Item NETHER_FLASK;
     public static Item NETHER_FLASK_SHARD;
@@ -32,6 +34,10 @@ public class ItemRegistrator {
 
         RAW_NETHER_FLASK = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "raw-nether-flask"),
                 new Item(new FabricItemSettings().maxCount(1)));
+
+
+        STARDUST_CAMPFIRE = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "stardust-campfire-item"),
+                new ToolTipBlockItem(BlocksRegistrator.STARDUST_CAMPFIRE, new FabricItemSettings().maxCount(1)));
 
         NETHER_STARDUST = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "nether-stardust"),
                 new Item(new FabricItemSettings()));

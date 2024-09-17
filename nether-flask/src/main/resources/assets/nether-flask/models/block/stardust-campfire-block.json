@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_campfire",
+  "textures": {
+    "fire": "nether-flask:block/stardust_campfire_fire",
+    "lit_log": "nether-flask:block/stardust_campfire_log_lit"
+  }
+}

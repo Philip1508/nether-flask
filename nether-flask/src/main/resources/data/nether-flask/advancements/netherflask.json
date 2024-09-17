@@ -31,7 +31,8 @@
       "nether-flask:raw-nether-flask",
       "nether-flask:nether-flask",
       "nether-flask:purging-stone",
-      "nether-flask:nether-stardust"
+      "nether-flask:nether-stardust",
+      "nether-flask:stardust-campfire-item"
     ]
   },
   "sends_telemetry_event": false

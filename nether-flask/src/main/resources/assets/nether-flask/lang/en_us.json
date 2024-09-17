@@ -6,6 +6,9 @@
   "item.nether-flask.sublime-bone-dust": "Sublime Bone Dust",
   "item.nether-flask.purging-stone": "Purging Stone",
 
+  "block.nether-flask.stardust-campfire-block": "Stardust Campfire",
+  "item.nether-flask.stardust-campfire-block-hint": "Careful! Won't drop if mined!",
+
 
   "item.nether-flask.tooltipuses": "Yields %s out of %s uses.",
   "item.nether-flask.tooltip-imbuehint": "Use with Potion in Off-Hand to Imbue!",

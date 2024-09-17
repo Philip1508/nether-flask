@@ -11,12 +11,10 @@ import java.util.List;
 
 public class UpgradeItem extends Item {
 
-
     public UpgradeItem(Settings settings) {
         super(settings);
     }
-
-
+    
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 

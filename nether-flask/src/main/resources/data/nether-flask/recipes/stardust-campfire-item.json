@@ -8,17 +8,12 @@
       "item": "nether-flask:nether-stardust"
     },
     {
-      "item": "minecraft:gold_nugget"
-    },
-    {
-      "item": "minecraft:iron_nugget"
-    },
-    {
-      "item": "minecraft:blaze_powder"
+      "item": "minecraft:soul_campfire"
     }
+
 
   ],
   "result": {
-    "item": "nether-flask:purging-stone"
+    "item": "nether-flask:stardust-campfire-item"
   }
 }
