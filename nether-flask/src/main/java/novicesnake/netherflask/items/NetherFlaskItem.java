@@ -21,6 +21,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
 
     private static final String NETHER_FLASK_CACHED_MODIFIER = "CACHED_MODIFIER";
     private static final String INITIALIZED = "INITIALIZED";
+    private static final String NEAR_CAMPFIRE = "NEAR_CAMPFIRE";
 
 
 
@@ -58,18 +60,34 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 
-        if (world.getTime() % 30 == 0)
+        NbtCompound mainNbt = stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND);
+
+        if (!mainNbt.getBoolean(INITIALIZED)) // => Initialize the Flask
         {
             if (!stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getBoolean(INITIALIZED))
             {
                 initializeFlask(stack);
             }
         }
-
-        if (world.getTime() % 600 == 0)
+        else
         {
-            updateEffects(stack);
+            boolean nearCampfire = mainNbt.getBoolean(NEAR_CAMPFIRE);
+
+            int timer = nearCampfire ? 50 : 400;
+
+            if (world.getTime() % timer == 0)
+            {
+                if (entity instanceof PlayerEntity player)
+                {
+                    mainNbt.putBoolean(NEAR_CAMPFIRE, player.getStatusEffect(StatusEffectRegistrator.FLASK_RECHARGER) != null);
+                }
+
+                updateEffects(stack);
+            }
         }
+
+
+
 
 
     }
@@ -81,9 +99,9 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
 
         NbtCompound flaskMainCompbound = user.getStackInHand(hand).getOrCreateSubNbt(NETHER_FLASK_COMPBOUND);
         boolean isImbued = flaskMainCompbound.getBoolean(IMBUED_WITH_POTION);
+        boolean nearCampfire = flaskMainCompbound.getBoolean(NEAR_CAMPFIRE);
 
-
-        if (hand == Hand.MAIN_HAND && offHandStack.isOf(Items.POTION) && !isImbued)
+        if (hand == Hand.MAIN_HAND && offHandStack.isOf(Items.POTION) && !isImbued && nearCampfire)
         {
             List<StatusEffectInstance> scaledEffects = new ArrayList<>();
             for (StatusEffectInstance effect : PotionUtil.getPotion(offHandStack).getEffects()) {
@@ -106,9 +124,13 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
 
         }
 
-        if (hand == Hand.MAIN_HAND && offHandStack.isOf(ItemRegistrator.NETHER_FLASK_SHARD)
+        if (hand == Hand.MAIN_HAND && nearCampfire &&
+
+                (offHandStack.isOf(ItemRegistrator.NETHER_FLASK_SHARD)
                 || offHandStack.isOf(ItemRegistrator.BONE_DUST)
                 || offHandStack.isOf(ItemRegistrator.PURGING_STONE))
+
+        )
         {
 
             if (offHandStack.isOf(ItemRegistrator.BONE_DUST))
@@ -291,8 +313,15 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
             return true;
         }
         return false;
-
     }
+
+
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getBoolean(NEAR_CAMPFIRE);
+    }
+
 
 
 }

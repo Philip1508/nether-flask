@@ -4,6 +4,7 @@ package novicesnake.netherflask.mixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.CampfireBlockEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -16,6 +17,7 @@ import novicesnake.netherflask.NetherFlask;
 import novicesnake.netherflask.items.ItemRegistrator;
 
 import novicesnake.netherflask.items.NetherFlaskItem;
+import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,9 +38,8 @@ public class CampfireFlaskrestorationMixin {
     {
         if (state.getBlock() instanceof CampfireBlock campfireBlock)
         {
-            Random numberGenerator = new Random();
 
-            if (campfireBlock.getTranslationKey().equals("block.minecraft.soul_campfire") && world.getTime() % (20*20) == 0)
+            if (campfireBlock.getTranslationKey().equals("block.minecraft.soul_campfire") && world.getTime() % (8*20) == 0)
             {
 
                 Box box = new Box(pos);
@@ -49,50 +50,9 @@ public class CampfireFlaskrestorationMixin {
 
                             if (entity instanceof PlayerEntity player)
                             {
-                                List<ItemStack> itemList = new ArrayList<>();
-                                int invSize = player.getInventory().size();
-
-                                for (int i = 0; i < invSize; i++)
-                                {
-                                    if (player.getInventory().getStack(i).isOf(ItemRegistrator.NETHER_FLASK) )
-                                    {
-                                        itemList.add(player.getInventory().getStack(i));
-                                    }
-
-                                }
-
-
-                                int size = itemList.size();
-
-                                if (size == 0)
-                                {
-                                    return;
-                                }
-
-                                int toRecharge = 0;
-
-                                if (size > 0)
-                                {
-                                    try
-                                    {
-                                        toRecharge = numberGenerator.nextInt(0, size);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        NetherFlask.LOGGER.error("Random Number Generation on which flask to refill has failed!");
-                                    }
-                                }
-
-                                ItemStack finalItem = itemList.get(toRecharge);
-
-                                if (finalItem.getItem() instanceof NetherFlaskItem netherFlaskItem)
-                                {
-                                    if (netherFlaskItem.incrementUses(finalItem))
-                                    {
-                                        world.playSound(null,pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.AMBIENT, 0.6f,0.3f);
-                                    }
-                                }
+                                player.addStatusEffect(new StatusEffectInstance(StatusEffectRegistrator.FLASK_RECHARGER, 10*20, 0, true, true, false));
                             }
+
                         });
 
 

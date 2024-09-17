@@ -36,6 +36,9 @@ public class UpgradeItem extends Item {
         }
 
 
+        tooltip.add(Text.translatable("item.nether-flask.upgrade.campfirehint"));
+
+
 
     }
 

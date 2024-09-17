@@ -13,11 +13,13 @@
   "item.nether-flask.upgrade.purging-stone": "Use in Off-Hand whilst wielding Netherflask to remove effect!",
   "item.nether-flask.upgrade.flask-shard": "Use in Off-Hand whilst wielding Netherflask to increase uses!",
   "item.nether-flask.upgrade.bone-dust": "Use in Off-Hand whilst wielding Netherflask to increase power!",
+  "item.nether-flask.upgrade.campfirehint": "User must be near Starkindled Campfire!",
 
 
   "item.nether-flask.nether-flask.effect.empty": "Empty Nether Flask",
 
   "block.nether-flask.flask-furnace-containername": "Flask Furnace",
+  "effect.nether-flask.flask-recharger": "Flask Charging",
 
   "creative.group.nether-flask": "Nether Flask"
 

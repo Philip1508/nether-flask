@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 
 import novicesnake.netherflask.items.ItemRegistrator;
 import novicesnake.netherflask.loot.LootTableModifiers;
+import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,11 @@ public class NetherFlask implements ModInitializer {
 
 		ItemRegistrator.initializeAndRegister();
 
+		StatusEffectRegistrator.initializeAndRegister();
 
 		LootTableModifiers.initializeAndRegister();
+
+
 
 
 		LOGGER.info("Hello Fabric world!");
