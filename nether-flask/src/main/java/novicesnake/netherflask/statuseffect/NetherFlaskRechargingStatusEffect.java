@@ -16,11 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/***
+ * This Class defines the Status Effect for recharging the Nether Flask, which also unlocks the upgrading by being
+ * on the player.
+ * Has been Extended for Overriding and to avoid Code Injection into the vanilla code.
+ */
 public class NetherFlaskRechargingStatusEffect extends StatusEffect {
 
+
+    // Random Number Generator to select a random flask in inventory.
     private static final Random RANDOM_NUMBER_GENERATOR = new Random();
 
 
+    // Constructor of the StatusEffect
     protected NetherFlaskRechargingStatusEffect(StatusEffectCategory category, int color) {
         super(category, color);
     }

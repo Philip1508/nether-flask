@@ -27,6 +27,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * This Class defines the Nether Flask Item and its correspondig Logic.
+ * Some Logic is Outsorced to the DurabilityNumberItemstack Interface!
+ */
 public class NetherFlaskItem extends PotionItem implements DurabilityNumberItemstack {
     private static final String NETHER_FLASK_COMPBOUND = "NETHER_FLASK_COMPBOUND";
 

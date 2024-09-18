@@ -15,19 +15,20 @@ import net.minecraft.util.Identifier;
 import novicesnake.netherflask.NetherFlask;
 import novicesnake.netherflask.blocks.blockentity.StardustCampfireBlockEntity;
 
+/***
+ * This Class registers the Blocks and BlockEntity's.
+ */
 public class BlocksRegistrator {
 
     public static BlockEntityType<StardustCampfireBlockEntity> STARDUST_CAMPFIRE_ENTITY;
     public static  Block STARDUST_CAMPFIRE;
 
 
+    /**
+     * This Method initializes and registers all Blocks and corresponding Entity
+     * */
     public static void initializeAndRegister()
     {
-
-
-
-
-
         STARDUST_CAMPFIRE = Registry.register(Registries.BLOCK,
                 new Identifier(NetherFlask.MOD_ID, "stardust-campfire-block"),
                 new StardustCampfireBlock(false, 4,

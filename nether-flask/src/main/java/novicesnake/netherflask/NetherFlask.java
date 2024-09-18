@@ -9,6 +9,8 @@ import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+
 public class NetherFlask implements ModInitializer {
 	public static final String MOD_ID = "nether-flask";
 
@@ -23,17 +25,21 @@ public class NetherFlask implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
+		LOGGER.info("Initializing Blocks and BlockEntity's");
 		BlocksRegistrator.initializeAndRegister();
 
+		LOGGER.info("Items and creative group");
 		ItemRegistrator.initializeAndRegister();
 
+
+		LOGGER.info("Initializing Status Effect");
 		StatusEffectRegistrator.initializeAndRegister();
 
+		LOGGER.info("Injecting into Loot Tables");
 		LootTableModifiers.initializeAndRegister();
 
 
 
 
-		LOGGER.info("Hello Fabric world!");
 	}
 }

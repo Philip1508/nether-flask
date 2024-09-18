@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "nether-flask",
-	"version": "${version}",
+	"version": "1.1.0",
 	"name": "Nether Flask",
 	"description": "The Nether Flask is a rechargeable Potion, upgraded through adventuring.",
 	"authors": [
@@ -10,7 +10,7 @@
 	"contact": {
 		"homepage": "https://discord.gg/s4gSJvVuq3"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/nether-flask/icon.png",
 	"environment": "*",
 	"entrypoints": {

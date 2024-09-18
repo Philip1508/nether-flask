@@ -13,6 +13,10 @@ import net.minecraft.util.Identifier;
 import novicesnake.netherflask.NetherFlask;
 import novicesnake.netherflask.blocks.BlocksRegistrator;
 
+
+/**
+ * This Class initializes and registers all items.
+ */
 public class ItemRegistrator {
 
 
@@ -29,6 +33,9 @@ public class ItemRegistrator {
     public static Item PURGING_STONE;
 
 
+    /**
+     * This method provides the initialization and registration process.
+     */
     public static void initializeAndRegister()
     {
 

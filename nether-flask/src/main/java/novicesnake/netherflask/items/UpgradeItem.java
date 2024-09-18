@@ -9,12 +9,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * This Class extends the Standard Item in order to allow Tooltip Manipulation of Upgrade Items.
+ */
 public class UpgradeItem extends Item {
 
     public UpgradeItem(Settings settings) {
         super(settings);
     }
-    
+
+
+    /**
+     * This Method defines the Tooltip Hint for each upgrade item.
+     */
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 

@@ -17,14 +17,30 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
 
+
+/**
+ * This Class defines the Stardust Campfire Block.
+ */
 public class StardustCampfireBlock extends CampfireBlock {
+
+    /**
+     * Constructor of the Block - NOT meant to be called outside the Registration Context!
+     * @param emitsParticles
+     * @param fireDamage
+     * @param settings
+     */
     public StardustCampfireBlock(boolean emitsParticles, int fireDamage, Settings settings) {
         super(emitsParticles, fireDamage, settings);
     }
 
 
-
-
+    /**
+     * This Methods returns the Stardust Campfire BlockType.
+     * This is necessary, because the normal Campfire makes it impossible to define it propertly.
+     * @param pos
+     * @param state
+     * @return
+     */
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state)
     {
@@ -32,6 +48,16 @@ public class StardustCampfireBlock extends CampfireBlock {
     }
 
 
+    /**
+     *
+     * Override and Replica of Super getTicker()
+     * Manipulated to use the Stardust Campfire EntityType.
+     * @param world
+     * @param state
+     * @param type
+     * @return
+     * @param <T>
+     */
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {

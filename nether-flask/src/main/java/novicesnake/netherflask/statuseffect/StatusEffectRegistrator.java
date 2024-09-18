@@ -7,12 +7,17 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import novicesnake.netherflask.NetherFlask;
 
+/**
+ * This Class Registers the Status Effects and binds a reference for each one onto a Class Field.
+ * */
 public class StatusEffectRegistrator {
 
     public static StatusEffect FLASK_RECHARGER;
 
 
-
+    /**
+     * This Method initializes and registers all Status Effects and binds them to a field.
+     */
     public static void initializeAndRegister()
     {
         FLASK_RECHARGER = Registry.register(Registries.STATUS_EFFECT,

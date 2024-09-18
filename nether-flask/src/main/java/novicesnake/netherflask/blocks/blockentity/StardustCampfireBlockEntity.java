@@ -16,9 +16,17 @@ import novicesnake.netherflask.blocks.BlocksRegistrator;
 import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 
 
+/**
+ * This Class defines the Stardust Campfire BlockEntity
+ */
 public class StardustCampfireBlockEntity extends CampfireBlockEntity {
 
 
+    /**
+     * Not meant to be used outside of registration context.
+     * @param pos
+     * @param state
+     */
     public StardustCampfireBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
     }
@@ -36,7 +44,14 @@ public class StardustCampfireBlockEntity extends CampfireBlockEntity {
     }
 
 
-
+    /**
+     * This Method defines the Tick of the StardustCampfire.
+     * It calls the "super" Server Tick and then apply's the Recharge Effect to nearby players.
+     * @param world
+     * @param pos
+     * @param state
+     * @param campfire
+     */
     public static void tick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire)
     {
 

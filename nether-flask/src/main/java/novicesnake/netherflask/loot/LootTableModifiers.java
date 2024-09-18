@@ -10,7 +10,9 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.util.Identifier;
 import novicesnake.netherflask.items.ItemRegistrator;
-
+/**
+ * This Injects into the Loot Tables of the game.
+ * */
 public class LootTableModifiers {
 
 
@@ -25,6 +27,10 @@ public class LootTableModifiers {
     private static final Identifier JUNGLE_TEMPLE = new Identifier("minecraft", "chests/jungle_temple" );
     private static final Identifier SIMPLE_DUNGEON = new Identifier("minecraft", "chests/simple_dungeon" );
 
+
+    /**
+     * Initialized Loot Table Injection.
+     */
     public static void initializeAndRegister()
     {
 
