@@ -16,9 +16,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
@@ -55,7 +53,7 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     @Override
     public ItemStack getDefaultStack()
     {
-        ItemStack netherFlaskDefault = new ItemStack(this);
+        ItemStack netherFlaskDefault = new ItemStack(ItemRegistrator.NETHER_FLASK);
         initializeFlask(netherFlaskDefault);
         return netherFlaskDefault;
     }
@@ -65,6 +63,9 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 
         NbtCompound mainNbt = stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND);
+
+
+
 
         if (!mainNbt.getBoolean(INITIALIZED)) // => Initialize the Flask
         {

@@ -2,6 +2,9 @@ package novicesnake.netherflask;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import novicesnake.netherflask.blocks.BlocksRegistrator;
 import novicesnake.netherflask.items.ItemRegistrator;
 import novicesnake.netherflask.loot.LootTableModifiers;
@@ -24,6 +27,8 @@ public class NetherFlask implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+
 
 		LOGGER.info("Initializing Blocks and BlockEntity's");
 		BlocksRegistrator.initializeAndRegister();

@@ -50,7 +50,7 @@ public class ItemRegistrator {
                 new Item(new FabricItemSettings()));
 
         NETHER_FLASK = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "nether-flask"),
-                new NetherFlaskItem(new FabricItemSettings().maxCount(1)  )
+                new NetherFlaskItem(new FabricItemSettings().maxCount(1).fireproof()  )
                 );
 
         NETHER_FLASK_SHARD = Registry.register(Registries.ITEM, new Identifier(NetherFlask.MOD_ID, "nether-flask-shard"),
