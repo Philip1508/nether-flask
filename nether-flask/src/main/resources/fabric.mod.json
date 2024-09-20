@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "nether-flask",
-	"version": "1.1.0",
+	"version": "${version}",
 	"name": "Nether Flask",
 	"description": "The Nether Flask is a rechargeable Potion, upgraded through adventuring.",
 	"authors": [
