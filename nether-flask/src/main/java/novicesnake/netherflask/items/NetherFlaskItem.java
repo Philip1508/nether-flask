@@ -311,7 +311,7 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
         int maximumLevel = NetherFlaskRuntimeData.loadedConfiguration.flaskMaxLevel;
 
         int level = mainCompbound.getInt(NETHER_FLASK_LEVEL);
-        if (level + 1  < maximumLevel)
+        if (level + 1  <= maximumLevel)
         {
             mainCompbound.putInt(NETHER_FLASK_LEVEL, level + 1);
             return true;
