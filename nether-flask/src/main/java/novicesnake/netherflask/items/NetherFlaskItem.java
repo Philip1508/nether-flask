@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import novicesnake.netherflask.config.NetherFlaskRuntimeData;
 import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 import org.jetbrains.annotations.Nullable;
 
@@ -274,9 +275,14 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
 
     private void initializeFlask(ItemStack item)
     {
-        setUses(item, 1);
-        setNbtSoftmax(item, 1);
-        setAbsoluteMaximum(item, 12);
+
+        int configuredStartUses = NetherFlaskRuntimeData.loadedConfiguration.newFlaskMaxUses;
+        int configuredHardMaximumUses = NetherFlaskRuntimeData.loadedConfiguration.flaskMaxUpgradableUses;
+
+        setUses(item, configuredStartUses);
+        setNbtSoftmax(item, configuredStartUses);
+
+        setAbsoluteMaximum(item, configuredHardMaximumUses);
 
         updateEffects(item);
 
@@ -289,7 +295,12 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     private void updateEffects(ItemStack item)
     {
         int flaskLevel = item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getInt(NETHER_FLASK_LEVEL);
-        item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).putFloat(NETHER_FLASK_CACHED_MODIFIER, 0.5f+(0.25f*flaskLevel));
+
+        float baseModifier = NetherFlaskRuntimeData.loadedConfiguration.flaskBaseDurationModifier;
+        float flaskLevelScaleDurationModifier = NetherFlaskRuntimeData.loadedConfiguration.flaskLevelScaleDurationModifier;
+
+        item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).putFloat(NETHER_FLASK_CACHED_MODIFIER,
+                baseModifier + (flaskLevelScaleDurationModifier * flaskLevel));
     }
 
 
@@ -297,8 +308,10 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     {
         NbtCompound mainCompbound = item.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND);
 
+        int maximumLevel = NetherFlaskRuntimeData.loadedConfiguration.flaskMaxLevel;
+
         int level = mainCompbound.getInt(NETHER_FLASK_LEVEL);
-        if (level + 1  < 6)
+        if (level + 1  < maximumLevel)
         {
             mainCompbound.putInt(NETHER_FLASK_LEVEL, level + 1);
             return true;
@@ -326,6 +339,12 @@ public class NetherFlaskItem extends PotionItem implements DurabilityNumberItems
     public boolean hasGlint(ItemStack stack) {
         return stack.getOrCreateSubNbt(NETHER_FLASK_COMPBOUND).getBoolean(NEAR_CAMPFIRE);
     }
+
+    @Override
+    public int getAbsoluteMaximum(ItemStack stack) {
+        return NetherFlaskRuntimeData.loadedConfiguration.flaskMaxUpgradableUses;
+    }
+
 
 
 

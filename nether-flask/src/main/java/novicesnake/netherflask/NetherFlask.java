@@ -2,17 +2,13 @@ package novicesnake.netherflask;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
 import novicesnake.netherflask.blocks.BlocksRegistrator;
+import novicesnake.netherflask.config.ConfigLoader;
 import novicesnake.netherflask.items.ItemRegistrator;
 import novicesnake.netherflask.loot.LootTableModifiers;
 import novicesnake.netherflask.statuseffect.StatusEffectRegistrator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Locale;
 
 public class NetherFlask implements ModInitializer {
 	public static final String MOD_ID = "nether-flask";
@@ -27,6 +23,10 @@ public class NetherFlask implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
+		LOGGER.info("Loading Resources");
+		//ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener());
+		ConfigLoader.initializeConfig();
 
 
 
